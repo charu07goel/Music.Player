@@ -71,4 +71,9 @@ public class songAdapter extends RecyclerView.Adapter<songAdapter.SongHolder> {
             btnAction = (Button) itemView.findViewById(R.id.btnAction);
         }
     }
+    public void setFilter(ArrayList<SongInfo> songlist){
+        _songs = new ArrayList<>();
+        _songs.addAll(songlist);
+        notifyDataSetChanged();
+    }
 }

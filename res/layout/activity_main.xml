@@ -8,6 +8,8 @@
     android:background="#000"
     tools:context="com.example.charugoel.musicplayer.MainActivity">
 
+    <include
+        layout="@layout/toolbar_layout"></include>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

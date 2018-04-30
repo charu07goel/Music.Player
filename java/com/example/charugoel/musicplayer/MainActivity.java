@@ -5,18 +5,23 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.support.v7.widget.SearchView;
 import android.widget.SeekBar;
+import android.support.v7.widget.Toolbar;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private ArrayList<SongInfo> _songs = new ArrayList<SongInfo>();
     RecyclerView recyclerView;
@@ -24,11 +29,15 @@ public class MainActivity extends AppCompatActivity {
     songAdapter songAdapter;
     MediaPlayer mediaPlayer;
     Handler handler = new Handler();
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         seekBar = (SeekBar) findViewById(R.id.seekBar);
 
@@ -166,5 +175,33 @@ public class MainActivity extends AppCompatActivity {
             cursor.close();
             songAdapter = new songAdapter(this, _songs);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_items,menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setOnQueryTextListener(this);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        s = s.toLowerCase();
+        ArrayList<SongInfo> songlist = new ArrayList<>();
+        for(SongInfo songInfo : songlist){
+            String songname = songInfo.getSongName().toLowerCase();
+            //String artistname = songInfo.getArtistName().toLowerCase();
+            if(songname.contains(s))
+                songlist.add(songInfo);
+        }
+        songAdapter.setFilter(songlist);
+        return true;
     }
 }
