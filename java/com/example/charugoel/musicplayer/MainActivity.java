@@ -181,12 +181,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_items,menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setOnQueryTextListener(this);
         return true;
     }
 
-    @Override
+   @Override
     public boolean onQueryTextSubmit(String s) {
         return false;
     }
@@ -197,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         ArrayList<SongInfo> songlist = new ArrayList<>();
         for(SongInfo songInfo : songlist){
             String songname = songInfo.getSongName().toLowerCase();
-            //String artistname = songInfo.getArtistName().toLowerCase();
             if(songname.contains(s))
                 songlist.add(songInfo);
         }
